@@ -1,0 +1,41 @@
+{
+  "program": "DEMO0100",
+  "app": "demo.zfrdemo0100",
+  "app_title": "주문 승인",
+  "frontend_type": "Fiori Elements (2 tab)",
+  "evidence": {
+    "service": "ZDEMO_C_ORDER_UI",
+    "object_page_tables": "backend *.ddlx.asddlxs (#LINEITEM_REFERENCE facets)",
+    "frontend_service": "ZDEMO_C_ORDER_UI",
+    "tabs": "webapp/manifest.json > sap.ui5.routing.targets (entitySet, views.paths) + annotations/*.xml + i18n",
+    "extra_entities": "webapp code: paths to exposed entity sets"
+  },
+  "tabs": [
+    {
+      "key": "tab1",
+      "entity": "ZDEMO_C_ORDER",
+      "title": "주문 목록"
+    },
+    {
+      "key": "tab2",
+      "entity": "ZDEMO_C_ORDER_APPR_HIS",
+      "title": "승인 이력"
+    }
+  ],
+  "object_page_tables": [
+    {
+      "entity": "ZDEMO_C_ORDER_ITEM",
+      "via": "_Item",
+      "of": [
+        "tab1"
+      ]
+    }
+  ],
+  "extra_entities": [],
+  "service_exposed": [
+    "ZDEMO_C_ORDER",
+    "ZDEMO_C_ORDER_ITEM",
+    "ZDEMO_C_ORDER_APPR_HIS"
+  ],
+  "review": []
+}

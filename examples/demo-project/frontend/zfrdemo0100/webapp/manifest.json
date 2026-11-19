@@ -1,0 +1,85 @@
+{
+  "_version": "1.59.0",
+  "sap.app": {
+    "id": "demo.zfrdemo0100",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "applicationVersion": { "version": "0.0.1" },
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "dataSources": {
+      "mainService": {
+        "uri": "/sap/opu/odata4/sap/zdemo_c_order_ui_v4/srvd/sap/zdemo_c_order_ui/0001/",
+        "type": "OData",
+        "settings": {
+          "annotations": ["annotation"],
+          "odataVersion": "4.0"
+        }
+      },
+      "annotation": {
+        "type": "ODataAnnotation",
+        "uri": "annotations/annotation.xml",
+        "settings": { "localUri": "annotations/annotation.xml" }
+      }
+    }
+  },
+  "sap.ui5": {
+    "dependencies": {
+      "minUI5Version": "1.120.0",
+      "libs": { "sap.m": {}, "sap.ui.core": {}, "sap.fe.templates": {} }
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": { "bundleName": "demo.zfrdemo0100.i18n.i18n" }
+      },
+      "": {
+        "dataSource": "mainService",
+        "preload": true,
+        "settings": { "operationMode": "Server", "autoExpandSelect": true, "earlyRequests": true }
+      }
+    },
+    "routing": {
+      "routes": [
+        { "name": "OrderList", "pattern": ":?query:", "target": "OrderList" },
+        { "name": "OrderObjectPage", "pattern": "ZDEMO_C_ORDER({key}):?query:", "target": "OrderObjectPage" }
+      ],
+      "targets": {
+        "OrderList": {
+          "type": "Component",
+          "id": "OrderList",
+          "name": "sap.fe.templates.ListReport",
+          "options": {
+            "settings": {
+              "entitySet": "ZDEMO_C_ORDER",
+              "views": {
+                "paths": [
+                  {
+                    "key": "tab1",
+                    "annotationPath": "com.sap.vocabularies.UI.v1.SelectionVariant#SV_Orders"
+                  },
+                  {
+                    "key": "tab2",
+                    "entitySet": "ZDEMO_C_ORDER_APPR_HIS",
+                    "annotationPath": "com.sap.vocabularies.UI.v1.SelectionVariant#SV_History"
+                  }
+                ]
+              },
+              "navigation": {
+                "ZDEMO_C_ORDER": { "detail": { "route": "OrderObjectPage" } }
+              }
+            }
+          }
+        },
+        "OrderObjectPage": {
+          "type": "Component",
+          "id": "OrderObjectPage",
+          "name": "sap.fe.templates.ObjectPage",
+          "options": {
+            "settings": { "contextPath": "/ZDEMO_C_ORDER" }
+          }
+        }
+      }
+    }
+  }
+}

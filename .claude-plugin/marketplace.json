@@ -1,0 +1,15 @@
+{
+  "name": "sap-cds-erd-skill",
+  "description": "SAP RAP 프로그램 단위 CDS view ERD를 draw.io로 그리는 Claude Code 스킬",
+  "owner": {
+    "name": "YUSHINSHUB",
+    "url": "https://github.com/YUSHINSHUB"
+  },
+  "plugins": [
+    {
+      "name": "sap-cds-erd",
+      "source": "./",
+      "description": "SAP RAP 프로그램(패키지) 단위 CDS view ERD를 draw.io 파일로 그리는 스킬"
+    }
+  ]
+}

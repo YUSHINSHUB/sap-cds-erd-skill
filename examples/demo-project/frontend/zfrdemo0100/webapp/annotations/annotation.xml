@@ -1,0 +1,29 @@
+<edmx:Edmx xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx" Version="4.0">
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/UI.xml">
+        <edmx:Include Namespace="com.sap.vocabularies.UI.v1" Alias="UI"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="/sap/opu/odata4/sap/zdemo_c_order_ui_v4/srvd/sap/zdemo_c_order_ui/0001/$metadata">
+        <edmx:Include Namespace="com.sap.gateway.srvd.zdemo_c_order_ui.v0001" Alias="SAP__self"/>
+    </edmx:Reference>
+    <edmx:DataServices>
+        <Schema xmlns="http://docs.oasis-open.org/odata/ns/edm" Namespace="local">
+
+            <Annotations Target="SAP__self.ZDEMO_C_ORDERType">
+                <Annotation Term="UI.SelectionVariant" Qualifier="SV_Orders">
+                    <Record Type="UI.SelectionVariantType">
+                        <PropertyValue Property="Text" String="{@i18n>SV_OrdersTitle}" />
+                    </Record>
+                </Annotation>
+            </Annotations>
+
+            <Annotations Target="SAP__self.ZDEMO_C_ORDER_APPR_HISType">
+                <Annotation Term="UI.SelectionVariant" Qualifier="SV_History">
+                    <Record Type="UI.SelectionVariantType">
+                        <PropertyValue Property="Text" String="{@i18n>SV_HistoryTitle}" />
+                    </Record>
+                </Annotation>
+            </Annotations>
+
+        </Schema>
+    </edmx:DataServices>
+</edmx:Edmx>

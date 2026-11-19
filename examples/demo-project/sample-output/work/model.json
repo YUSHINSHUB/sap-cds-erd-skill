@@ -1,0 +1,438 @@
+{
+ "program_package": "zdemo0100",
+ "screen": {
+  "program": "DEMO0100",
+  "app": "demo.zfrdemo0100",
+  "app_title": "주문 승인",
+  "frontend_type": "Fiori Elements (2 tab)",
+  "evidence": {
+   "service": "ZDEMO_C_ORDER_UI",
+   "object_page_tables": "backend *.ddlx.asddlxs (#LINEITEM_REFERENCE facets)",
+   "frontend_service": "ZDEMO_C_ORDER_UI",
+   "tabs": "webapp/manifest.json > sap.ui5.routing.targets (entitySet, views.paths) + annotations/*.xml + i18n",
+   "extra_entities": "webapp code: paths to exposed entity sets"
+  },
+  "tabs": [
+   {
+    "key": "tab1",
+    "entity": "ZDEMO_C_ORDER",
+    "title": "주문 목록"
+   },
+   {
+    "key": "tab2",
+    "entity": "ZDEMO_C_ORDER_APPR_HIS",
+    "title": "승인 이력"
+   }
+  ],
+  "object_page_tables": [
+   {
+    "entity": "ZDEMO_C_ORDER_ITEM",
+    "via": "_Item",
+    "of": [
+     "tab1"
+    ]
+   }
+  ],
+  "extra_entities": [],
+  "service_exposed": [
+   "ZDEMO_C_ORDER",
+   "ZDEMO_C_ORDER_ITEM",
+   "ZDEMO_C_ORDER_APPR_HIS"
+  ],
+  "review": []
+ },
+ "nodes": [
+  {
+   "name": "ZDEMO_C_ORDER",
+   "category": "program",
+   "root": true,
+   "kind": "view entity",
+   "label": "주문 목록",
+   "package": "zdemo0100",
+   "keys": [
+    "OrderId"
+   ],
+   "aggregation": null,
+   "source_kind": "projection",
+   "external_assoc_count": 0
+  },
+  {
+   "name": "ZDEMO_C_ORDER_APPR_HIS",
+   "category": "program",
+   "root": false,
+   "kind": "view entity",
+   "label": "승인 이력 (최근 건)",
+   "package": "zdemo0100",
+   "keys": [
+    "OrderId",
+    "ApprovalNo"
+   ],
+   "aggregation": null,
+   "source_kind": "select",
+   "external_assoc_count": 0
+  },
+  {
+   "name": "ZDEMO_C_ORDER_ITEM",
+   "category": "program",
+   "root": false,
+   "kind": "view entity",
+   "label": "주문 품목",
+   "package": "zdemo0100",
+   "keys": [
+    "OrderId",
+    "ItemNo"
+   ],
+   "aggregation": null,
+   "source_kind": "projection",
+   "external_assoc_count": 0
+  },
+  {
+   "name": "ZDEMO_I_ORDER",
+   "category": "program",
+   "root": false,
+   "kind": "view entity",
+   "label": "주문 헤더",
+   "package": "zdemo0100",
+   "keys": [
+    "OrderId"
+   ],
+   "aggregation": null,
+   "source_kind": "select",
+   "external_assoc_count": 0
+  },
+  {
+   "name": "ZDEMO_I_ORDER_AMOUNT",
+   "category": "program",
+   "root": false,
+   "kind": "view entity",
+   "label": "주문별 금액 합계",
+   "package": "zdemo0100",
+   "keys": [
+    "OrderId"
+   ],
+   "aggregation": {
+    "functions": [
+     {
+      "expr": "sum(Amount)",
+      "alias": "TotalAmount",
+      "functions": [
+       "SUM"
+      ]
+     }
+    ],
+    "group_by": [
+     "OrderId",
+     "Currency"
+    ],
+    "where": "IsCanceled = ''",
+    "having": "",
+    "join_conditions": [],
+    "usage": {
+     "reads": [
+      {
+       "ref": "_Amount.TotalAmount",
+       "exposed_as": "TotalAmount",
+       "views": [
+        "ZDEMO_R_ORDER"
+       ]
+      }
+     ],
+     "conditions": [],
+     "outside_readers": []
+    }
+   },
+   "source_kind": "select",
+   "external_assoc_count": 0
+  },
+  {
+   "name": "ZDEMO_I_ORDER_APPR",
+   "category": "program",
+   "root": false,
+   "kind": "view entity",
+   "label": "주문 승인 이력",
+   "package": "zdemo0100",
+   "keys": [
+    "OrderId",
+    "ApprovalNo"
+   ],
+   "aggregation": null,
+   "source_kind": "select",
+   "external_assoc_count": 0
+  },
+  {
+   "name": "ZDEMO_I_ORDER_APPR_LAST",
+   "category": "program",
+   "root": false,
+   "kind": "view entity",
+   "label": "주문별 가장 최근 승인",
+   "package": "zdemo0100",
+   "keys": [
+    "OrderId"
+   ],
+   "aggregation": {
+    "functions": [
+     {
+      "expr": "max(ApprovalNo)",
+      "alias": "LastApprovalNo",
+      "functions": [
+       "MAX"
+      ]
+     }
+    ],
+    "group_by": [
+     "OrderId"
+    ],
+    "where": "",
+    "having": "",
+    "join_conditions": [],
+    "usage": {
+     "reads": [
+      {
+       "ref": "_Last.LastApprovalNo",
+       "exposed_as": "LastApprovalNo",
+       "views": [
+        "ZDEMO_C_ORDER_APPR_HIS"
+       ]
+      },
+      {
+       "ref": "_LastAppr.LastApprovalNo",
+       "exposed_as": "LastApprovalNo",
+       "views": [
+        "ZDEMO_R_ORDER"
+       ]
+      }
+     ],
+     "conditions": [
+      {
+       "view": "ZDEMO_C_ORDER_APPR_HIS",
+       "condition": "_Appr.ApprovalNo = _Last.LastApprovalNo"
+      }
+     ],
+     "outside_readers": []
+    }
+   },
+   "source_kind": "select",
+   "external_assoc_count": 0
+  },
+  {
+   "name": "ZDEMO_I_ORDER_ITEM",
+   "category": "program",
+   "root": false,
+   "kind": "view entity",
+   "label": "주문 품목",
+   "package": "zdemo0100",
+   "keys": [
+    "OrderId",
+    "ItemNo"
+   ],
+   "aggregation": null,
+   "source_kind": "select",
+   "external_assoc_count": 0
+  },
+  {
+   "name": "ZDEMO_R_ORDER",
+   "category": "program",
+   "root": true,
+   "kind": "view entity",
+   "label": "주문 (BO)",
+   "package": "zdemo0100",
+   "keys": [
+    "OrderId"
+   ],
+   "aggregation": null,
+   "source_kind": "select",
+   "external_assoc_count": 1
+  },
+  {
+   "name": "ZDEMO_R_ORDER_ITEM",
+   "category": "program",
+   "root": false,
+   "kind": "view entity",
+   "label": "주문 품목 (BO)",
+   "package": "zdemo0100",
+   "keys": [
+    "OrderId",
+    "ItemNo"
+   ],
+   "aggregation": null,
+   "source_kind": "select",
+   "external_assoc_count": 0
+  },
+  {
+   "name": "ztdemo_order",
+   "category": "table"
+  },
+  {
+   "name": "I_Customer",
+   "category": "standard"
+  },
+  {
+   "name": "ztdemo_appr",
+   "category": "table"
+  },
+  {
+   "name": "ztdemo_item",
+   "category": "table"
+  }
+ ],
+ "edges": [
+  {
+   "kind": "projection",
+   "src": "ZDEMO_C_ORDER",
+   "dst": "ZDEMO_R_ORDER",
+   "label": "projection"
+  },
+  {
+   "kind": "select",
+   "src": "ZDEMO_C_ORDER_APPR_HIS",
+   "dst": "ZDEMO_I_ORDER_APPR",
+   "label": ""
+  },
+  {
+   "kind": "join",
+   "src": "ZDEMO_C_ORDER_APPR_HIS",
+   "dst": "ZDEMO_I_ORDER",
+   "label": "inner join"
+  },
+  {
+   "kind": "projection",
+   "src": "ZDEMO_C_ORDER_ITEM",
+   "dst": "ZDEMO_R_ORDER_ITEM",
+   "label": "projection"
+  },
+  {
+   "kind": "select",
+   "src": "ZDEMO_I_ORDER",
+   "dst": "ztdemo_order",
+   "label": ""
+  },
+  {
+   "kind": "join",
+   "src": "ZDEMO_I_ORDER",
+   "dst": "I_Customer",
+   "label": "left outer join"
+  },
+  {
+   "kind": "select",
+   "src": "ZDEMO_I_ORDER_AMOUNT",
+   "dst": "ZDEMO_I_ORDER_ITEM",
+   "label": ""
+  },
+  {
+   "kind": "select",
+   "src": "ZDEMO_I_ORDER_APPR",
+   "dst": "ztdemo_appr",
+   "label": ""
+  },
+  {
+   "kind": "select",
+   "src": "ZDEMO_I_ORDER_APPR_LAST",
+   "dst": "ZDEMO_I_ORDER_APPR",
+   "label": ""
+  },
+  {
+   "kind": "select",
+   "src": "ZDEMO_I_ORDER_ITEM",
+   "dst": "ztdemo_item",
+   "label": ""
+  },
+  {
+   "kind": "select",
+   "src": "ZDEMO_R_ORDER",
+   "dst": "ZDEMO_I_ORDER",
+   "label": ""
+  },
+  {
+   "kind": "select",
+   "src": "ZDEMO_R_ORDER_ITEM",
+   "dst": "ZDEMO_I_ORDER_ITEM",
+   "label": ""
+  },
+  {
+   "kind": "composition",
+   "src": "ZDEMO_C_ORDER",
+   "dst": "ZDEMO_C_ORDER_ITEM",
+   "label": "_Item",
+   "card": "[0..*]"
+  },
+  {
+   "kind": "assoc",
+   "src": "ZDEMO_C_ORDER_APPR_HIS",
+   "dst": "ZDEMO_I_ORDER_APPR_LAST",
+   "label": "_Last",
+   "card": "[0..1]"
+  },
+  {
+   "kind": "assoc",
+   "src": "ZDEMO_R_ORDER",
+   "dst": "ZDEMO_I_ORDER_AMOUNT",
+   "label": "_Amount",
+   "card": "[1]"
+  },
+  {
+   "kind": "assoc",
+   "src": "ZDEMO_R_ORDER",
+   "dst": "ZDEMO_I_ORDER_APPR_LAST",
+   "label": "_LastAppr",
+   "card": "[0..1]"
+  },
+  {
+   "kind": "composition",
+   "src": "ZDEMO_R_ORDER",
+   "dst": "ZDEMO_R_ORDER_ITEM",
+   "label": "_Item",
+   "card": "[0..*]"
+  }
+ ],
+ "external_associations": [
+  {
+   "view": "ZDEMO_R_ORDER",
+   "alias": "_Currency",
+   "target": "I_Currency",
+   "card": "[0..1]"
+  }
+ ],
+ "abstract": {
+  "ZDEMO_A_APPROVE": {
+   "name": "ZDEMO_A_APPROVE",
+   "root": true,
+   "kind": "abstract entity",
+   "label": "승인 요청 Parameter - Head",
+   "package": "zdemo0100",
+   "lineage": [],
+   "associations": [],
+   "compositions": [
+    {
+     "card": "[1..*]",
+     "target": "ZDEMO_A_APPROVE_LINE",
+     "alias": "_Line"
+    }
+   ],
+   "parent": null,
+   "keys": [
+    "DummyKey"
+   ],
+   "aggregation": null,
+   "where": ""
+  },
+  "ZDEMO_A_APPROVE_LINE": {
+   "name": "ZDEMO_A_APPROVE_LINE",
+   "root": false,
+   "kind": "abstract entity",
+   "label": "승인 요청 Parameter - 결재선",
+   "package": "zdemo0100",
+   "lineage": [],
+   "associations": [],
+   "compositions": [],
+   "parent": {
+    "target": "ZDEMO_A_APPROVE",
+    "alias": "_Head"
+   },
+   "keys": [
+    "DummyKey"
+   ],
+   "aggregation": null,
+   "where": ""
+  }
+ }
+}

@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.venv/
+venv/
+.pytest_cache/
+
+# 데모를 직접 실행했을 때 생기는 결과물
+examples/demo-project/out/
+
+# draw.io CLI의 실행 취소 이력, 편집기 임시 파일
+*.drawio.history.json
+*.bkp
+.$*.drawio.bkp
+.$*.drawio.dtmp
+
+# OS
+.DS_Store
+Thumbs.db

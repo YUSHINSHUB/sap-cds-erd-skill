@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_TABL" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <DD02V>
+    <TABNAME>ZTDEMO_APPR</TABNAME>
+    <DDLANGUAGE>3</DDLANGUAGE>
+    <TABCLASS>TRANSP</TABCLASS>
+    <DDTEXT>Demo: approval history</DDTEXT>
+   </DD02V>
+  </asx:values>
+ </asx:abap>
+</abapGit>

@@ -1,0 +1,13 @@
+{
+  "name": "sap-cds-erd",
+  "version": "1.0.0",
+  "license": "MIT",
+  "author": {
+    "name": "YUSHINSHUB",
+    "url": "https://github.com/YUSHINSHUB"
+  },
+  "homepage": "https://github.com/YUSHINSHUB/sap-cds-erd-skill",
+  "repository": "https://github.com/YUSHINSHUB/sap-cds-erd-skill",
+  "description": "SAP RAP 프로그램(패키지) 단위 CDS view ERD를 draw.io 파일로 그리는 스킬. Source → CDS View → 최종 출력(화면 탭) 3구역, 기능별 세부 구역, 집계 값 설명 포함.",
+  "keywords": ["sap", "abap", "rap", "cds", "erd", "drawio", "fiori", "abapgit"]
+}

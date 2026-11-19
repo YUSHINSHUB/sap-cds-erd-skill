@@ -1,0 +1,32 @@
+{
+  "evidence": [
+    "examples/demo-project/docs/주문승인-기능정의.md — 기능 1 주문 헤더, 2 주문 품목 · 금액, 3 승인 이력"
+  ],
+  "aggregation_notes": {
+    "ZDEMO_I_ORDER_AMOUNT": "주문별 품목 금액 합계. 취소된 품목은 뺀다. 탭1 주문 목록의 총금액",
+    "ZDEMO_I_ORDER_APPR_LAST": "주문별 가장 큰 승인번호 = 그 주문의 가장 최근 승인 1건. 승인 이력이 여러 건일 때 최신 건만 고르는 기준값"
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "① 주문 헤더",
+      "note": "주문 테이블에 고객 이름을 붙인 화면용 BO. 탭1의 기준",
+      "entities": ["ZDEMO_I_ORDER", "ZDEMO_R_ORDER"]
+    },
+    {
+      "id": "items",
+      "title": "② 주문 품목 · 금액",
+      "note": "상세 화면의 품목 테이블과 주문별 금액 합계",
+      "entities": [
+        "ZDEMO_I_ORDER_ITEM", "ZDEMO_I_ORDER_AMOUNT",
+        "ZDEMO_R_ORDER_ITEM", "ZDEMO_C_ORDER_ITEM"
+      ]
+    },
+    {
+      "id": "approval",
+      "title": "③ 승인 이력",
+      "note": "승인번호 순으로 쌓이는 이력과 가장 최근 건. 탭2의 기준",
+      "entities": ["ZDEMO_I_ORDER_APPR", "ZDEMO_I_ORDER_APPR_LAST"]
+    }
+  ]
+}

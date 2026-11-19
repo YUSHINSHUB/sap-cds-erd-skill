@@ -1,0 +1,6 @@
+@EndUserText.label: '주문 승인 데모'
+define service ZDEMO_C_ORDER_UI {
+  expose ZDEMO_C_ORDER;
+  expose ZDEMO_C_ORDER_ITEM;
+  expose ZDEMO_C_ORDER_APPR_HIS;
+}
