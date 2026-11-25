@@ -1,6 +1,6 @@
 {
   "evidence": [
-    "examples/demo-project/docs/주문승인-기능정의.md — 기능 1 주문 헤더, 2 주문 품목 · 금액, 3 승인 이력"
+    "examples/demo-project/docs/주문승인-기능정의.md > 기능: 1 주문 헤더, 2 주문 품목 · 금액, 3 승인 이력이 구역 ①~③의 근거"
   ],
   "aggregation_notes": {
     "ZDEMO_I_ORDER_AMOUNT": "주문별 품목 금액 합계. 취소된 품목은 뺀다. 탭1 주문 목록의 총금액",

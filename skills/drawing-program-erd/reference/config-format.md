@@ -44,6 +44,15 @@
 }
 ```
 
+### evidence
+
+한 줄에 `문서 경로 > 절 제목: 무엇의 근거인지`를 적는다. OpenWiki 페이지도 같은 형식이다.
+
+```json
+"examples/demo-project/docs/주문승인-기능정의.md > 기능: 1 주문 헤더, 2 주문 품목 · 금액, 3 승인 이력이 구역 ①~③의 근거",
+"openwiki/modules/demo/order-approval.md > BO 구조: Header / Item / Approval 노드 구분이 구역 ①~③의 근거"
+```
+
 ### sections
 
 - 배열 순서가 위→아래 순서다. 서로 많이 연결된 구역을 이웃하게 둔다.

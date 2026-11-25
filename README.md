@@ -12,7 +12,7 @@ SAP RAP 프로그램(패키지) 하나를 지정하면, 로컬에 받아 둔 aba
 
 - **왼쪽에서 오른쪽으로 3구역.** Source(SAP 표준 CDS view · DB 테이블) → CDS View → 최종 출력(화면 탭). 구역은 배경색으로 구분합니다.
 - **최종 출력은 화면 기준.** 프론트엔드의 manifest와 annotation을 읽어, 탭이 실제로 띄우는 엔터티만 맨 오른쪽 열에 놓습니다. 프론트엔드가 없으면 서비스 정의를 기준으로 잡습니다.
-- **가운데는 기능별 세부 구역.** basic-memory 노트와 로컬 스펙 문서에서 기능 단위가 확인될 때만 나눕니다. 근거가 없으면 나누지 않습니다.
+- **가운데는 기능별 세부 구역.** OpenWiki 페이지 · basic-memory 노트 · 로컬 스펙 문서에서 기능 단위가 확인될 때만 나눕니다. 근거가 없으면 나누지 않습니다.
 - **집계 view에는 설명이 붙습니다.** GROUP BY · 집계 함수 · 조건은 소스에서 자동으로 뽑고, 그 값이 업무적으로 무엇인지("▶ 가져오는 값")는 문서를 읽고 적습니다. 그 값을 읽는 view와 조건도 함께 표시합니다.
 - **관계 종류를 선 모양으로 구분.** select from, projection, join, association(카디널리티 포함), composition.
 - **결과물**은 draw.io에서 계속 고칠 수 있는 `.drawio` 파일과 PNG · PDF입니다. 페이지는 최대 3장입니다: ① View 관계 ② Abstract 엔터티(액션 파라미터) ③ 외부 연관 표.
@@ -25,7 +25,7 @@ SAP RAP 프로그램(패키지) 하나를 지정하면, 로컬에 받아 둔 aba
 |---|---|---|
 | 1 | 화면에 뜨는 엔터티 확인 → `screen.json` | `scripts/frontend_screen.py` |
 | 2 | 저장소 전체를 색인해 관계 · 집계 · 사용처 추출 → `model.json` | `scripts/cds_model.py` |
-| 3 | 프로그램 관련 문서 조사 | Claude (basic-memory + 로컬 문서) |
+| 3 | 프로그램 관련 문서 조사 | Claude (OpenWiki + basic-memory + 로컬 문서) |
 | 4 | 기능 구분과 집계 값의 의미 작성 → `sections.json` | Claude |
 | 5 | 배치 계산 후 draw.io 파일 생성 | `scripts/build_erd.py` → `cli-anything-drawio` |
 | 6 | 파일 검사, PNG · PDF 내보내기, 그림을 직접 열어 확인 | Claude |
@@ -42,11 +42,14 @@ SAP RAP 프로그램(패키지) 하나를 지정하면, 로컬에 받아 둔 aba
 | [draw.io 데스크톱](https://github.com/jgraph/drawio-desktop/releases) | 24.7.17에서 검증 | PNG · PDF 내보내기 |
 | `cli-anything-drawio` | 이 저장소의 `tools/`에 들어 있음 | `.drawio` 생성 · 검사 · 내보내기 |
 | [basic-memory](https://github.com/basicmachines-co/basic-memory) MCP | 1.0 이상 (`bm_project`, `bm_search`, `bm_read` 도구), Claude Code에 연결된 상태 | 프로그램 관련 문서 검색 |
+| OpenWiki (선택) | 소스 저장소에 `openwiki/` 폴더가 있는 경우. openwiki MCP가 연결되어 있으면 검색에 사용 | 프로그램 관련 문서 조사(가장 먼저 읽음) |
 | 백엔드 소스 | abapGit 형식의 `src` 폴더가 로컬에 있어야 함 | 분석 대상 |
 | 프론트엔드 소스 (선택) | UI5 / Fiori elements 앱 폴더 (`webapp/manifest.json`) | 화면 탭 확인 |
 | Pillow (선택) | `pip install pillow` | 넓은 그림을 잘라서 확인 |
 
-**basic-memory에 대해.** 스킬의 3단계가 basic-memory 볼트에서 프로그램 스펙 · 설계 노트를 찾습니다. 가운데 구역을 기능별로 나누는 근거가 여기서 나오므로, 프로그램 문서를 볼트에 넣어 두어야 스킬이 제 성능을 냅니다. 연결되어 있지 않으면 스킬은 그 사실을 알리고 로컬 문서만으로 진행하며, 근거를 찾지 못하면 가운데 구역을 나누지 않고 그립니다.
+**basic-memory에 대해.** 스킬의 3단계가 basic-memory 볼트에서 프로그램 스펙 · 설계 노트를 찾습니다. OpenWiki가 없으면 가운데 구역을 기능별로 나누는 근거가 주로 여기서 나오므로, 프로그램 문서를 볼트에 넣어 두어야 스킬이 제 성능을 냅니다. 연결되어 있지 않으면 스킬은 그 사실을 알리고 로컬 문서만으로 진행하며, 근거를 찾지 못하면 가운데 구역을 나누지 않고 그립니다.
+
+**OpenWiki에 대해.** 소스 저장소에 OpenWiki(`openwiki/` 폴더)가 있으면 3단계에서 가장 먼저 읽습니다. 모듈 페이지와 아키텍처 페이지에 정리된 처리 단계 · BO 구조 · 프로그램 간 관계가 기능 구분과 집계 설명의 실마리가 됩니다. 위키 내용은 CDS 소스로 다시 확인하고, 둘이 다르면 소스를 따르며 그 차이를 보고합니다.
 
 ## 설치
 
